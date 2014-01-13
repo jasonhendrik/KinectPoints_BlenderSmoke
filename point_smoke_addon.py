@@ -1,6 +1,13 @@
 # Credits 2013
 # Jason Hendrik -> jsnhendrik@gmail.com  
-# Base Vertice Script... by someone else...
+
+# This script was developed for motion graphics production workflow in Blender
+# Recording point cloud data files from the kinect and turning them into Particles, 
+# Smoke Emittors, Etc... This script will import the frames into the meshData of an object.
+# moving the timeline will replace the data with each frame.
+
+
+# VERSION 0.11 
 
 import bpy; 
 from bpy import *; 
@@ -36,7 +43,7 @@ def ImportOneFrame(FolderPath,primera,increment):
     counter=0
     c= 0
     
-    # Vertex   
+    # Vertex  (some credits missing here)
     for line in file.readlines():
         
         mydata[c] = line.split(',');
@@ -131,9 +138,6 @@ def ImportOneFrame(FolderPath,primera,increment):
     mat.type = 'HALO'
     mat.alpha = 0
         
-        
-
-    
     bpy.ops.object.move_to_layer(layers=(False, True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))
    
     #output to console   
@@ -149,6 +153,7 @@ def ImportOneFrame(FolderPath,primera,increment):
 #MAIN PROGRAM
 
 for increment in range (frameCount):   
+    #Replace this folder-path with the folder containing your kinect recordings from "OFKinectRecorder" or Similar Process
     FolderPath = open('/Users/jasonhendrik/Google Drive/personal_projects/smoke_tests/data/guitar/'+ 'frame' + str(increment) +'.txt','r')    
     ImportOneFrame(FolderPath, primera, increment);    
 
