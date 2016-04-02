@@ -1,4 +1,4 @@
-# Credits 2013
+# Credits 2015
 # Jason Hendrik -> jsnhendrik@gmail.com  
 
 # This script was developed for motion graphics production workflow in Blender
@@ -17,7 +17,7 @@ import bmesh;
 frameCount = 398
 
 
-bpy.ops.object.delete(use_global=False)
+bpy.ops.object.delete(use_global=False )
 
 # prepare a scene
 scn = bpy.context.scene
@@ -177,6 +177,9 @@ def mesh_update(scene):
        
     #needs to only update mesh named "animation"
     # even when not selected...
+    # issues here need afix
+    
+    
     bpy.data.objects['animation'].data = bpy.data.meshes.get("points%i" % scene.frame_current)  
     #bpy.context.object.data = bpy.data.meshes.get("points%i" % scene.frame_current)    
     
