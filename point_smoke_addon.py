@@ -1,42 +1,43 @@
-# Credits 2015
-# Jason Hendrik -> jsnhendrik@gmail.com  
-
-# This script was developed for motion graphics production workflow in Blender
-# Recording point cloud data files from the kinect and turning them into Particles, 
-# Smoke Emittors, Etc... This script will import the frames into the meshData of an object.
-# moving the timeline will replace the data with each frame.
-
-
-# VERSION 0.11 
-
 import bpy; 
 from bpy import *; 
 import bmesh;
-
-
-frameCount = 398
-
-
+#remeber to change this
+frameCount = 225
 bpy.ops.object.delete(use_global=False )
-
 # prepare a scene
 scn = bpy.context.scene
 scn.frame_start = 0
 scn.frame_end = frameCount
 primera = 1
-
-
+#create placeholder object
+bpy.ops.mesh.primitive_cube_add(radius=0, view_align=False, enter_editmode=False, location=(0, 0, 0), rotation=(0, 0, 0), layers=(True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))
+bpy.context.object.name = "animation"
 def ImportOneFrame(FolderPath,primera,increment):
-
     # create obj and add to scene
     me = bpy.data.meshes.new('points'+ str(increment)) 
     ob = bpy.data.objects.new('frame'+ str(increment), me) 
     
     ob.location = bpy.context.scene.cursor_location
     bpy.context.scene.objects.link(ob)   
+    
+    
+    
+    
+###
 
+     # PAAAAREEEENT THE F$^%KKERS!!!!  
+     ob.parent = bpy.context.object.name = "animation"
+    # here is not working
+
+
+ ###
+    
+    
+    
+    
     # for currentFrame in range(1):
     file = FolderPath
+    
     mydata = {} 
     vertexdata = []
     facedata = []
@@ -105,7 +106,8 @@ def ImportOneFrame(FolderPath,primera,increment):
             c = c+1
      
     #file.close()
-                  
+       
+          
     # animate
     ob.hide = True
     ob.hide_render = True   
@@ -123,14 +125,15 @@ def ImportOneFrame(FolderPath,primera,increment):
     #move timeline to keyframe
     bpy.context.scene.frame_current = increment      
    
+   
     #select one object
     bpy.ops.object.select_all(action='DESELECT')
     myobject = bpy.data.objects['frame'+str(increment)]    
     myobject.select = True
     bpy.context.scene.objects.active = myobject
-       
-    #begin material
     
+   
+    #begin material
     mat = bpy.data.materials.new('PointCloud')     
     mat = bpy.data.materials[-1]
     obj = bpy.context.active_object       
@@ -139,7 +142,7 @@ def ImportOneFrame(FolderPath,primera,increment):
     mat.alpha = 0
         
     bpy.ops.object.move_to_layer(layers=(False, True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))
-   
+  
     #output to console   
     print("Imported frame " + str(increment))
     
@@ -148,30 +151,22 @@ def ImportOneFrame(FolderPath,primera,increment):
     myobject = bpy.data.objects['frame'+ str(increment)]    
     myobject.select = False    
     
-
-
 #MAIN PROGRAM
-
 for increment in range (frameCount):   
-    #Replace this folder-path with the folder containing your kinect recordings from "OFKinectRecorder" or Similar Process
-    FolderPath = open('/Users/jasonhendrik/Google Drive/personal_projects/smoke_tests/data/guitar/'+ 'frame' + str(increment) +'.txt','r')    
-    ImportOneFrame(FolderPath, primera, increment);    
-
-#create placeholder object
-bpy.ops.mesh.primitive_cube_add(radius=0, view_align=False, enter_editmode=False, location=(0, 0, 0), rotation=(0, 0, 0), layers=(True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False))
-bpy.context.object.name = "animation"
-
+      
+   FolderPath = open('C:/Users/jhendrik/Documents/Processing/mySketchFolder/kinect_V1_cloud/kinect1_txtPointClouds/' + 'frame' + str(increment) +'.txt','r')
+    
+   ImportOneFrame(FolderPath, primera, increment);    
 #Add Smoke Particles (for Viewing Too)
-bpy.ops.object.particle_system_add()
-bpy.data.particles["ParticleSettings"].name = "smoke_emittors"
-
-bpy.data.particles["smoke_emittors"].count = (100000)
-bpy.data.particles["smoke_emittors"].frame_start = scn.frame_start
-bpy.data.particles["smoke_emittors"].frame_end =  scn.frame_end 
-bpy.data.particles["smoke_emittors"].lifetime = 4
-bpy.data.particles["smoke_emittors"].emit_from = 'VERT'
-
-
+#bpy.ops.object.particle_system_add()
+#bpy.data.particles["ParticleSettings"].name = "smoke_emittors"
+#
+#bpy.data.particles["smoke_emittors"].count = (100000)
+#bpy.data.particles["smoke_emittors"].frame_start = scn.frame_start
+#bpy.data.particles["smoke_emittors"].frame_end =  scn.frame_end 
+#bpy.data.particles["smoke_emittors"].lifetime = 4
+#bpy.data.particles["smoke_emittors"].emit_from = 'VERT'
+#
 def mesh_update(scene):
        
        
@@ -181,9 +176,4 @@ def mesh_update(scene):
     
     
     bpy.data.objects['animation'].data = bpy.data.meshes.get("points%i" % scene.frame_current)  
-    #bpy.context.object.data = bpy.data.meshes.get("points%i" % scene.frame_current)    
-    
-    
-
 bpy.app.handlers.frame_change_pre.append(mesh_update)
-    
