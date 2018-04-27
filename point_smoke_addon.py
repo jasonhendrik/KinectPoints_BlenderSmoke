@@ -1,3 +1,7 @@
+# original project and work from the pelayomendez's blender script
+# found here: https://github.com/pelayomendez/ofxKinectMeshRecorder/blob/master/bin/data/scripts/blender2.6/Mesh2VertexImport.py
+# updates and changes by jasonhendrik
+
 
 import bpy; 
 from bpy import *; 
